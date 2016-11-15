@@ -2,45 +2,29 @@
 
 var React = require('react');
 var MovieApi = require('../../api/movieApi');
+var MovieList = require('./movieList');
 
-var Movies = React.createClass({
+var MoviePage = React.createClass({
   getInitialState: function() {
     return {
       movies: []
     };
   },
 
-  componentWillMount: function() {
-    this.setState({movies: MovieApi.getAllMovies()});
+  componentDidMount: function() {
+    if (this.isMounted()) {
+      this.setState({movies: MovieApi.getAllMovies()});
+    }
   },
 
   render: function () {
-    var createMovieRow = function(movie) {
-      return (
-        <tr key={movie.id}>
-          <td>
-            <a href={"/#movies/" + movie.id}>{movie.id}</a>
-          </td>
-          <td>{movie.title} {movie.director}</td>
-        </tr>
-      );
-    };
-
     return (
       <div>
         <h1>Movies</h1>
-        <table className="table">
-          <thead>
-            <th>ID</th>
-            <th>Title</th>
-          </thead>
-          <tbody>
-            {this.state.movies.map(createMovieRow, this)}
-          </tbody>
-        </table>
+        <MovieList movies={this.state.movies} />
       </div>
     );
   }
 });
 
-module.exports = Movies;
+module.exports = MoviePage;
