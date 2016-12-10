@@ -1,6 +1,8 @@
 "use strict";
 
 var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var MovieList = React.createClass({
   propTypes: {
@@ -11,10 +13,10 @@ var MovieList = React.createClass({
     var createMovieRow = function(movie) {
       return (
         <tr key={movie.id}>
-          <td>
-            <a href={"/#movies/" + movie.id}>{movie.id}</a>
-          </td>
-          <td>{movie.title} {movie.director}</td>
+          <td><Link to='manageMovies' params={{id: movie.id}}>{movie.id}</Link></td>
+          <td>{movie.title}</td>
+          <td>{movie.director}</td>
+          <td>{movie.ratings}</td>
         </tr>
       );
     };
@@ -25,6 +27,8 @@ var MovieList = React.createClass({
           <thead>
             <th>ID</th>
             <th>Title</th>
+            <th>Director</th>
+            <th>Ratings</th>
           </thead>
           <tbody>
             {this.props.movies.map(createMovieRow, this)}
