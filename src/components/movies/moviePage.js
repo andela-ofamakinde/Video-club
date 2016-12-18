@@ -3,20 +3,27 @@
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
-var MovieApi = require('../../api/movieApi');
+var MovieActions = require('../../actions/movieActions');
+var MovieStore = require('../../stores/movieStore');
 var MovieList = require('./movieList');
 
 var MoviePage = React.createClass({
   getInitialState: function() {
     return {
-      movies: []
+      movies: MovieStore.getAllMovies()
     };
   },
 
-  componentDidMount: function() {
-    if (this.isMounted()) {
-      this.setState({movies: MovieApi.getAllMovies()});
-    }
+  componentWillMount: function() {
+    MovieStore.addChangeListener(this._onChange);
+  },
+
+ componentWillUnmount: function() {
+    MovieStore.removeChangeListener(this._onChange);
+  },
+
+  _onChange: function() {
+    this.setState({movies: MovieStore.getAllMovies()});
   },
 
   render: function () {
